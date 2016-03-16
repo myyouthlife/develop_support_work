@@ -1,0 +1,8 @@
+D:\vsproject\testprojectofwpf\wfsClient\wfsClient\bin\Debug\wfsClient.exe
+D:\vsproject\testprojectofwpf\wfsClient\wfsClient\bin\Debug\wfsClient.pdb
+D:\vsproject\testprojectofwpf\wfsClient\wfsClient\obj\Debug\wfsClient.csprojResolveAssemblyReference.cache
+D:\vsproject\testprojectofwpf\wfsClient\wfsClient\obj\Debug\wfsClient.Form1.resources
+D:\vsproject\testprojectofwpf\wfsClient\wfsClient\obj\Debug\wfsClient.Properties.Resources.resources
+D:\vsproject\testprojectofwpf\wfsClient\wfsClient\obj\Debug\wfsClient.csproj.GenerateResource.Cache
+D:\vsproject\testprojectofwpf\wfsClient\wfsClient\obj\Debug\wfsClient.exe
+D:\vsproject\testprojectofwpf\wfsClient\wfsClient\obj\Debug\wfsClient.pdb

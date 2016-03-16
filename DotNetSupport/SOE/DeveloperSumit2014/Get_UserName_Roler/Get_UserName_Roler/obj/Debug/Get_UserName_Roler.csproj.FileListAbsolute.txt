@@ -1,0 +1,5 @@
+D:\vsproject\Get_UserName_Roler\Get_UserName_Roler\bin\Debug\Get_UserName_Roler.dll
+D:\vsproject\Get_UserName_Roler\Get_UserName_Roler\bin\Debug\Get_UserName_Roler.pdb
+D:\vsproject\Get_UserName_Roler\Get_UserName_Roler\obj\Debug\Get_UserName_Roler.dll
+D:\vsproject\Get_UserName_Roler\Get_UserName_Roler\obj\Debug\Get_UserName_Roler.pdb
+D:\vsproject\Get_UserName_Roler\Get_UserName_Roler\bin\Debug\Get_UserName_Roler.soe

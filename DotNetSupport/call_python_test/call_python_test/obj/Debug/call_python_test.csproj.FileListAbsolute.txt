@@ -1,0 +1,9 @@
+D:\api_sdk\Arcgis Runtime\test_project_runtime_net\call_python_test\call_python_test\bin\Debug\call_python_test.exe.config
+D:\api_sdk\Arcgis Runtime\test_project_runtime_net\call_python_test\call_python_test\bin\Debug\call_python_test.exe
+D:\api_sdk\Arcgis Runtime\test_project_runtime_net\call_python_test\call_python_test\bin\Debug\call_python_test.pdb
+D:\api_sdk\Arcgis Runtime\test_project_runtime_net\call_python_test\call_python_test\obj\Debug\call_python_test.csprojResolveAssemblyReference.cache
+D:\api_sdk\Arcgis Runtime\test_project_runtime_net\call_python_test\call_python_test\obj\Debug\call_python_test.Form1.resources
+D:\api_sdk\Arcgis Runtime\test_project_runtime_net\call_python_test\call_python_test\obj\Debug\call_python_test.Properties.Resources.resources
+D:\api_sdk\Arcgis Runtime\test_project_runtime_net\call_python_test\call_python_test\obj\Debug\call_python_test.csproj.GenerateResource.Cache
+D:\api_sdk\Arcgis Runtime\test_project_runtime_net\call_python_test\call_python_test\obj\Debug\call_python_test.exe
+D:\api_sdk\Arcgis Runtime\test_project_runtime_net\call_python_test\call_python_test\obj\Debug\call_python_test.pdb

@@ -1,0 +1,5 @@
+D:\vsproject\Image_Services_SOE\Image_Services_SOE\bin\Debug\Image_Services_SOE.dll
+D:\vsproject\Image_Services_SOE\Image_Services_SOE\bin\Debug\Image_Services_SOE.pdb
+D:\vsproject\Image_Services_SOE\Image_Services_SOE\obj\Debug\Image_Services_SOE.dll
+D:\vsproject\Image_Services_SOE\Image_Services_SOE\obj\Debug\Image_Services_SOE.pdb
+D:\vsproject\Image_Services_SOE\Image_Services_SOE\bin\Debug\Image_Services_SOE.soe

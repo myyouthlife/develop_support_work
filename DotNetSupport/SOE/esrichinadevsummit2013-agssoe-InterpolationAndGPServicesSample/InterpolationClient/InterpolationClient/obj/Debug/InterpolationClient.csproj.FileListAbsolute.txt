@@ -1,0 +1,10 @@
+c:\users\jmb\documents\visual studio 2010\Projects\InterpolationClient\InterpolationClient\bin\InterpolationClient.dll
+c:\users\jmb\documents\visual studio 2010\Projects\InterpolationClient\InterpolationClient\bin\InterpolationClient.pdb
+c:\users\jmb\documents\visual studio 2010\Projects\InterpolationClient\InterpolationClient\obj\Debug\ResolveAssemblyReference.cache
+c:\users\jmb\documents\visual studio 2010\Projects\InterpolationClient\InterpolationClient\obj\Debug\InterpolationClient.dll
+c:\users\jmb\documents\visual studio 2010\Projects\InterpolationClient\InterpolationClient\obj\Debug\InterpolationClient.pdb
+E:\SOE\开发者大会\InterpolationClient\InterpolationClient\bin\InterpolationClient.dll
+E:\SOE\开发者大会\InterpolationClient\InterpolationClient\bin\InterpolationClient.pdb
+E:\SOE\开发者大会\InterpolationClient\InterpolationClient\obj\Debug\ResolveAssemblyReference.cache
+E:\SOE\开发者大会\InterpolationClient\InterpolationClient\obj\Debug\InterpolationClient.dll
+E:\SOE\开发者大会\InterpolationClient\InterpolationClient\obj\Debug\InterpolationClient.pdb

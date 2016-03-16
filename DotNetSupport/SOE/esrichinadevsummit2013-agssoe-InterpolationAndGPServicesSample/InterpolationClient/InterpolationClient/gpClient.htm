@@ -1,0 +1,142 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>空间查询</title>
+    <link rel="stylesheet" type="text/css" href="http://192.168.110.129/arcgis_js_api/library/3.3/jsapi/js/dojo/dijit/themes/claro/claro.css">
+    <link rel="stylesheet" type="text/css" href="http://192.168.110.129/arcgis_js_api/library/3.3/jsapi/js/dojo/dojox/grid/resources/Grid.css">
+    <link rel="stylesheet" type="text/css" href="http://192.168.110.129/arcgis_js_api/library/3.3/jsapi/js/dojo/dojox/grid/resources/claroGrid.css">
+    <!--    <link rel="stylesheet" href="http://serverapi.arcgisonline.com/jsapi/arcgis/3.4/js/esri/css/esri.css">-->
+    <link rel="Stylesheet" type="text/css" href="http://192.168.110.129/arcgis_js_api/library/3.3/jsapi/js/esri/css/esri.css" />
+    <script type="text/javascript">
+        var dojoConfig = { parseOnLoad: true }
+    </script>
+    <script src="http://192.168.110.129/arcgis_js_api/library/3.3/jsapi/init.js"></script>
+    <script type="text/javascript" src="jsapi_vsdoc_v32_2010.js"></script>
+    <script type="text/javascript" src="></script>
+    <script type="text/javascript">
+        dojo.require("esri.map");
+        dojo.require("dojox.grid.DataGrid");
+        dojo.require("dojo.data.ItemFileReadStore");
+        dojo.require("dijit.form.Button");
+        var map;
+        var gp;
+        var mapResturl = "http://localhost:6080/arcgis/rest/services/mapServices/Interpolation/MapServer";
+        var gpUrl = "http://localhost:6080/arcgis/rest/services/mapServices/Interpolation_new/GPServer/Interpolataion_new1";
+
+        function init() {
+            map = new esri.Map("mapDiv");
+            var dynamiclayers = new esri.layers.ArcGISDynamicMapServiceLayer(mapResturl);
+            map.addLayer(dynamiclayers);
+
+            var helloButton = dojo.byId("helloButton");
+            dojo.connect(helloButton, "onclick", function () {
+
+                DoInterpolation();
+            });
+        }
+
+        function DoInterpolation() {
+            gp = new esri.tasks.Geoprocessor(gpUrl);
+            //创建GP服务
+            var cellsize = parseFloat(dojo.byId('cellsize').value);
+            if (cellsize == null) {
+                alert("请输入插值栅格大小");
+            }
+
+            //开始调用GP服务
+            var params = {
+                "point elevation:": "point elevation",           
+                "Output cell size": cellsize
+            }
+
+            //在发布gp服务的时候中，如果选择的是异步方式，采用的执行方式
+            gp.submitJob(params, drawResponseGeometries);
+           
+        }
+
+
+        function drawResponseGeometries(info) {
+            gp.getResultData(info.jobId, "RasterT_Reclass2", function (result) {
+                map.graphics.clear();
+                //设置样式
+                var value = result.value.features;
+                for (var i = 0, il = value.length; i < il; i++) {
+                    if (value[i].attributes.GRIDCODE == 1) {
+
+                        var symbol1 = new esri.symbol.SimpleFillSymbol(esri.symbol.SimpleFillSymbol.STYLE_SOLID,
+                            new esri.symbol.SimpleLineSymbol(esri.symbol.SimpleLineSymbol.STYLE_SOLID,
+                                    new dojo.Color([128, 0, 0]), 1), new dojo.Color([252, 216, 192]));
+                        CreateGrphic(symbol1, value[i]);
+
+
+                    }
+                    else if (value[i].attributes.GRIDCODE == 2) {
+
+                        var symbol2 = new esri.symbol.SimpleFillSymbol(esri.symbol.SimpleFillSymbol.STYLE_SOLID,
+                            new esri.symbol.SimpleLineSymbol(esri.symbol.SimpleLineSymbol.STYLE_SOLID,
+                                    new dojo.Color([128, 0, 0]), 1), new dojo.Color([249, 179, 252]));
+                        CreateGrphic(symbol2, value[i]);
+
+                    }
+                    else if (value[i].attributes.GRIDCODE == 3) {
+                        var symbol3 = new esri.symbol.SimpleFillSymbol(esri.symbol.SimpleFillSymbol.STYLE_SOLID,
+                            new esri.symbol.SimpleLineSymbol(esri.symbol.SimpleLineSymbol.STYLE_SOLID,
+                                    new dojo.Color([128, 0, 0]), 1), new dojo.Color([207, 217, 252]));
+
+                        CreateGrphic(symbol3, value[i]);
+
+
+                    }
+                    else {
+
+                        var symbol4 = new esri.symbol.SimpleFillSymbol(esri.symbol.SimpleFillSymbol.STYLE_SOLID,
+                            new esri.symbol.SimpleLineSymbol(esri.symbol.SimpleLineSymbol.STYLE_SOLID,
+                                    new dojo.Color([128, 0, 0]), 1), new dojo.Color([207, 252, 179]));
+                        CreateGrphic(symbol4, value[i]);
+                    }
+
+                }
+
+            });
+
+         
+        }
+        function CreateGrphic(symbole, geo) {
+            var sr = map.spatialReference;
+            var polygon = new esri.geometry.Polygon(sr);
+
+
+            var attr = {
+                "坡度等级": geo.gridCode
+            };
+            var infoTemplate = new esri.InfoTemplate();
+            for (var j = 0, jl = geo.geometry.rings.length; j < jl; j++) {
+                polygon.addRing(geo.geometry.rings[j]);
+
+            }
+            var currentGraphic = new esri.Graphic(polygon, symbole, attr, infoTemplate);
+            map.graphics.add(currentGraphic);
+        }
+
+        dojo.ready(init);
+
+    </script>
+</head>
+<body class="claro">
+    <div id="mapDiv" style="width: 400px; height: 300px; border: 1px solid #000;">
+    </div>
+    <br>
+    <label for="ltm">
+        选择插值方法:</label>
+    <select id="method" name="method" data-dojo-type="dijit-form-Select">
+        <option value="Krige" selected="selected">Krig</option>
+        <option value="IDW">IDW</option>
+    </select>
+    <br />
+    <label for="ltb">
+        输入插值像元大小:</label>
+    <input id="cellsize" data-dojo-type="dijit-form-TextBox" />
+    <button data-dojo-type="dijit.form.Button" id="helloButton">
+        执行插值</button>
+</body>
+</html>

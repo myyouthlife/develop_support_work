@@ -1,0 +1,37 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ESRI.Configuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://schemas.esri.com/Desktop/AddIns">
+  <Name>Krige_idw</Name>
+  <AddInID>c052660c-ad89-498e-b080-5cb267b33f1f</AddInID>
+  <Description>Insert SOE package description here</Description>
+  <Version>1.0</Version>
+  <Author>jmb</Author>
+  <Company>Insert Company Name Here</Company>
+  <Date>2013-05-04T14:02:41</Date>
+  <Targets>
+    <Target name="Server" version="10.1" />
+  </Targets>
+  <AddIn language="CLR">
+    <ServerObjectType>
+      <Name>MapServer</Name>
+      <ExtensionTypes>
+        <ExtensionType id="Krige_idw.Krige_idw" library="Krige_idw.dll" class="Krige_idw.Krige_idw">
+          <Name>Krige_idw</Name>
+          <DisplayName>Krige_idw</DisplayName>
+          <Description>This SOE was used to interpolation</Description>
+          <Properties>
+            <Field_Name>spot</Field_Name>
+            <Layer_Name>point elevation</Layer_Name>
+          </Properties>
+          <Info>
+            <DefaultWebCapabilities />
+            <AllWebCapabilities />
+            <SupportsREST>true</SupportsREST>
+            <SupportsSOAP>false</SupportsSOAP>
+            <hasManagerPropertiesConfigurationPane>false</hasManagerPropertiesConfigurationPane>
+          </Info>
+          <Resources />
+        </ExtensionType>
+      </ExtensionTypes>
+    </ServerObjectType>
+  </AddIn>
+</ESRI.Configuration>

@@ -1,0 +1,11 @@
+﻿<Application xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
+             xmlns:System="clr-namespace:System;assembly=mscorlib" 
+             x:Class="TestProjectofSL.App"
+             >
+    <Application.Resources>
+
+        <System:String x:Key="DevExpress.Xpf.License">14-55-A9-FD-86-83-9E-AE-3C-0C-AA-73-E4-7F-64-07-B4-36-A1-17</System:String>
+
+    </Application.Resources>
+</Application>

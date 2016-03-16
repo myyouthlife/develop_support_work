@@ -1,0 +1,12 @@
+E:\vsproject\Studioat.ArcGIS.Server.Administrator\Studioat.ArcGIS.Server.Administrator\bin\Debug\Studioat.ArcGIS.Server.Administrator.exe.config
+E:\vsproject\Studioat.ArcGIS.Server.Administrator\Studioat.ArcGIS.Server.Administrator\obj\Debug\Studioat.ArcGIS.Server.Administrator.csprojResolveAssemblyReference.cache
+E:\vsproject\Studioat.ArcGIS.Server.Administrator\Studioat.ArcGIS.Server.Administrator\bin\Debug\Studioat.ArcGIS.Server.Administrator.exe
+E:\vsproject\Studioat.ArcGIS.Server.Administrator\Studioat.ArcGIS.Server.Administrator\bin\Debug\Studioat.ArcGIS.Server.Administrator.pdb
+E:\vsproject\Studioat.ArcGIS.Server.Administrator\Studioat.ArcGIS.Server.Administrator\obj\Debug\Studioat.ArcGIS.Server.Administrator.exe
+E:\vsproject\Studioat.ArcGIS.Server.Administrator\Studioat.ArcGIS.Server.Administrator\obj\Debug\Studioat.ArcGIS.Server.Administrator.pdb
+E:\admin_api\Studioat.ArcGIS.Server.Administrator\Studioat.ArcGIS.Server.Administrator\bin\Debug\Studioat.ArcGIS.Server.Administrator.exe.config
+E:\admin_api\Studioat.ArcGIS.Server.Administrator\Studioat.ArcGIS.Server.Administrator\obj\Debug\Studioat.ArcGIS.Server.Administrator.exe
+E:\admin_api\Studioat.ArcGIS.Server.Administrator\Studioat.ArcGIS.Server.Administrator\obj\Debug\Studioat.ArcGIS.Server.Administrator.pdb
+E:\admin_api\Studioat.ArcGIS.Server.Administrator\Studioat.ArcGIS.Server.Administrator\obj\Debug\Studioat.ArcGIS.Server.Administrator.csprojResolveAssemblyReference.cache
+E:\admin_api\Studioat.ArcGIS.Server.Administrator\Studioat.ArcGIS.Server.Administrator\bin\Debug\Studioat.ArcGIS.Server.Administrator.exe
+E:\admin_api\Studioat.ArcGIS.Server.Administrator\Studioat.ArcGIS.Server.Administrator\bin\Debug\Studioat.ArcGIS.Server.Administrator.pdb

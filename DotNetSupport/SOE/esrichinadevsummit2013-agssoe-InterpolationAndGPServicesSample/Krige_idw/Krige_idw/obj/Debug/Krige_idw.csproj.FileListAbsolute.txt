@@ -1,0 +1,18 @@
+c:\users\jmb\documents\visual studio 2010\Projects\Krige_idw\Krige_idw\obj\Debug\ResolveAssemblyReference.cache
+c:\users\jmb\documents\visual studio 2010\Projects\Krige_idw\Krige_idw\bin\Debug\Krige_idw.dll
+c:\users\jmb\documents\visual studio 2010\Projects\Krige_idw\Krige_idw\bin\Debug\Krige_idw.pdb
+c:\users\jmb\documents\visual studio 2010\Projects\Krige_idw\Krige_idw\obj\Debug\Krige_idw.dll
+c:\users\jmb\documents\visual studio 2010\Projects\Krige_idw\Krige_idw\obj\Debug\Krige_idw.pdb
+C:\Users\jmb\Documents\Visual Studio 2010\Projects\Krige_idw\Krige_idw\bin\Debug\Krige_idw.soe
+E:\SOE\开发者大会\Krige_idw\Krige_idw\bin\Debug\Krige_idw.dll
+E:\SOE\开发者大会\Krige_idw\Krige_idw\bin\Debug\Krige_idw.pdb
+E:\SOE\开发者大会\Krige_idw\Krige_idw\obj\Debug\ResolveAssemblyReference.cache
+E:\SOE\开发者大会\Krige_idw\Krige_idw\obj\Debug\Krige_idw.dll
+E:\SOE\开发者大会\Krige_idw\Krige_idw\obj\Debug\Krige_idw.pdb
+E:\SOE\开发者大会\Krige_idw\Krige_idw\bin\Debug\Krige_idw.soe
+E:\SOE\开发者大会\Demo\Krige_idw\Krige_idw\bin\Debug\Krige_idw.dll
+E:\SOE\开发者大会\Demo\Krige_idw\Krige_idw\bin\Debug\Krige_idw.pdb
+E:\SOE\开发者大会\Demo\Krige_idw\Krige_idw\obj\Debug\ResolveAssemblyReference.cache
+E:\SOE\开发者大会\Demo\Krige_idw\Krige_idw\obj\Debug\Krige_idw.dll
+E:\SOE\开发者大会\Demo\Krige_idw\Krige_idw\obj\Debug\Krige_idw.pdb
+E:\SOE\开发者大会\Demo\Krige_idw\Krige_idw\bin\Debug\Krige_idw.soe

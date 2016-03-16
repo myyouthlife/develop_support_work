@@ -1,0 +1,299 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>content</title>
+    <link rel="stylesheet" type="text/css" href="http://localhost/arcgis_js_api/library/3.3/jsapi/js/dojo/dijit/themes/claro/claro.css">
+    <link rel="Stylesheet" type="text/css" href="http://localhost/dijit/themes/soria/soria.css" />
+    <link rel="stylesheet" type="text/css" href="http://localhost/arcgis_js_api/library/3.3/jsapi/js/dojo/dojox/grid/resources/Grid.css">
+    <link rel="stylesheet" type="text/css" href="http://localhost/arcgis_js_api/library/3.3/jsapi/js/dojo/dojox/grid/resources/claroGrid.css">
+    <!--    <link rel="stylesheet" href="http://serverapi.arcgisonline.com/jsapi/arcgis/3.4/js/esri/css/esri.css">-->
+    <link rel="Stylesheet" type="text/css" href="http://localhost/arcgis_js_api/library/3.3/jsapi/js/esri/css/esri.css" />
+    <script type="text/javascript">
+        var dojoConfig = { parseOnLoad: true }
+    </script>
+    <script src="http://localhost/arcgis_js_api/library/3.3/jsapi/init.js"></script>
+    <script src="jsapi_vsdoc_v32_2010.js"></script>   
+    <script type="text/javascript">
+        dojo.require("dijit.layout.ContentPane");
+        dojo.require("dijit.layout.BorderContainer");
+        dojo.require("dojo.parser");
+        dojo.require("esri.map");
+        dojo.require("dijit.form.Button");
+        var mapSOE;
+        var mapgp;
+        var timebegin;
+        var timebegin2;
+        var mapResturl = "http://localhost:6080/arcgis/rest/services/mapServices/Interpolation/MapServer";
+        //  var mapResturl = "http://localhost:6080/arcgis/rest/services/mapServices/idw_2/MapServer/jobs/j32ab91a545824f748ea2744e7395ad69";
+        var soeUrl = "http://localhost:6080/arcgis/rest/services/mapServices/Interpolation/MapServer/exts/Krige_idw/Interpolation";
+        var gpUrl = "http://localhost:6080/arcgis/rest/services/mapServices/Interpolation_new/GPServer/Interpolataion_new1";
+        function init() {
+
+
+
+            var initExtent = new esri.geometry.Extent({ xmin: 595583.5, ymin: 4114401.25, xmax: 597743.5, ymax: 4116321.25, spatialReference: { wkid: 26716} });
+            mapSOE = new esri.Map("mapSOE", { extent: initExtent });
+
+            var dynamiclayers = new esri.layers.ArcGISDynamicMapServiceLayer(mapResturl);
+            mapSOE.addLayer(dynamiclayers);
+
+            var helloButton = dojo.byId("btnSOE");
+            dojo.connect(helloButton, "onclick", function () {
+                DoInterpolation();
+            });
+
+            mapgp = new esri.Map("mapgp", { extent: initExtent });
+            var dynamiclayersgp = new esri.layers.ArcGISDynamicMapServiceLayer(mapResturl);
+            mapgp.addLayer(dynamiclayersgp);
+
+            var btngp = dojo.byId("btngp");
+            dojo.connect(btngp, "onclick", function () {
+                DoInterpolation2();
+            });
+        }
+        function DoInterpolation() {
+            //获取执行开始时间
+            timebegin = (new Date()).getTime();
+            var cellsize = parseFloat(dojo.byId('cellsize').value);
+            if (cellsize == null) {
+                alert("请输入插值栅格大小");
+            }
+            //构造请求参数
+            var edd = dojo.byId("method");
+            var method = edd.options[edd.selectedIndex].value;
+            var content = {
+                'method': method,
+                'cellsize': cellsize,
+                'f': "json"
+            };
+            //执行请求
+            esri.request({
+                url: soeUrl,
+                content: content,
+                callbackParamName: "callback",
+                load: function (response) {
+                //请求结果的可视化
+                    drawResponseGeometries(response.geometries);
+
+                },
+                error: function (error) {
+                    console.log(error);
+                }
+            });
+
+
+
+        }
+        function drawResponseGeometries(geometries) {
+            mapSOE.graphics.clear();
+
+            //设置样式
+
+            for (var i = 0, il = geometries.length; i < il; i++) {
+                if (geometries[i].gridCode == 1) {
+
+                    var symbol1 = new esri.symbol.SimpleFillSymbol(esri.symbol.SimpleFillSymbol.STYLE_SOLID,
+                            new esri.symbol.SimpleLineSymbol(esri.symbol.SimpleLineSymbol.STYLE_SOLID,
+                                    new dojo.Color([128, 0, 0]), 1), new dojo.Color([252, 216, 192]));
+                    CreateGrphic(symbol1, geometries[i]);
+
+
+                }
+                else if (geometries[i].gridCode == 2) {
+
+                    var symbol2 = new esri.symbol.SimpleFillSymbol(esri.symbol.SimpleFillSymbol.STYLE_SOLID,
+                            new esri.symbol.SimpleLineSymbol(esri.symbol.SimpleLineSymbol.STYLE_SOLID,
+                                    new dojo.Color([128, 0, 0]), 1), new dojo.Color([249, 179, 252]));
+                    CreateGrphic(symbol2, geometries[i]);
+
+                }
+                else if (geometries[i].gridCode == 3) {
+                    var symbol3 = new esri.symbol.SimpleFillSymbol(esri.symbol.SimpleFillSymbol.STYLE_SOLID,
+                            new esri.symbol.SimpleLineSymbol(esri.symbol.SimpleLineSymbol.STYLE_SOLID,
+                                    new dojo.Color([128, 0, 0]), 1), new dojo.Color([207, 217, 252]));
+
+                    CreateGrphic(symbol3, geometries[i]);
+
+
+                }
+                else {
+
+                    var symbol4 = new esri.symbol.SimpleFillSymbol(esri.symbol.SimpleFillSymbol.STYLE_SOLID,
+                            new esri.symbol.SimpleLineSymbol(esri.symbol.SimpleLineSymbol.STYLE_SOLID,
+                                    new dojo.Color([128, 0, 0]), 1), new dojo.Color([207, 252, 179]));
+                    CreateGrphic(symbol4, geometries[i]);
+                }
+
+            }
+        }
+     
+        function CreateGrphic(symbole, geo) {
+            var sr = mapSOE.spatialReference;
+            var polygon = new esri.geometry.Polygon(sr);
+
+            var attr = {
+                "坡度等级": geo.gridCode
+            };
+            var infoTemplate = new esri.InfoTemplate();
+            for (var j = 0, jl = geo.geometry.rings.length; j < jl; j++) {
+                polygon.addRing(geo.geometry.rings[j]);
+
+            }
+            var currentGraphic = new esri.Graphic(polygon, symbole, attr, infoTemplate);
+            mapSOE.graphics.add(currentGraphic);
+            var timeend = (new Date()).getTime();
+            var time = timeend - timebegin;
+            document.getElementById("soeTime").value = time;
+        }
+
+        function DoInterpolation2() {
+            gp = new esri.tasks.Geoprocessor(gpUrl);
+            //创建GP服务
+            var cellsize = parseFloat(dojo.byId('cellsize2').value);
+            if (cellsize == null) {
+                alert("请输入插值栅格大小");
+            }
+
+            //开始调用GP服务
+            var params = {
+                "point elevation:": "point elevation",
+                "Output cell size": cellsize
+            }
+
+            //在发布gp服务的时候中，如果选择的是异步方式，采用的执行方式
+            timebegin2 = (new Date()).getTime();
+            gp.submitJob(params, drawResponseGeometries2);
+
+
+        }
+
+
+        function drawResponseGeometries2(info) {
+            gp.getResultData(info.jobId, "RasterT_Reclass2", function (result) {
+                mapgp.graphics.clear();
+                //设置样式
+                var value = result.value.features;
+                for (var i = 0, il = value.length; i < il; i++) {
+                    if (value[i].attributes.GRIDCODE == 1) {
+
+                        var symbol1 = new esri.symbol.SimpleFillSymbol(esri.symbol.SimpleFillSymbol.STYLE_SOLID,
+                            new esri.symbol.SimpleLineSymbol(esri.symbol.SimpleLineSymbol.STYLE_SOLID,
+                                    new dojo.Color([128, 0, 0]), 1), new dojo.Color([252, 216, 192]));
+                        CreateGrphic2(symbol1, value[i]);
+
+
+                    }
+                    else if (value[i].attributes.GRIDCODE == 2) {
+
+                        var symbol2 = new esri.symbol.SimpleFillSymbol(esri.symbol.SimpleFillSymbol.STYLE_SOLID,
+                            new esri.symbol.SimpleLineSymbol(esri.symbol.SimpleLineSymbol.STYLE_SOLID,
+                                    new dojo.Color([128, 0, 0]), 1), new dojo.Color([249, 179, 252]));
+                        CreateGrphic2(symbol2, value[i]);
+
+                    }
+                    else if (value[i].attributes.GRIDCODE == 3) {
+                        var symbol3 = new esri.symbol.SimpleFillSymbol(esri.symbol.SimpleFillSymbol.STYLE_SOLID,
+                            new esri.symbol.SimpleLineSymbol(esri.symbol.SimpleLineSymbol.STYLE_SOLID,
+                                    new dojo.Color([128, 0, 0]), 1), new dojo.Color([207, 217, 252]));
+
+                        CreateGrphic2(symbol3, value[i]);
+
+
+                    }
+                    else {
+
+                        var symbol4 = new esri.symbol.SimpleFillSymbol(esri.symbol.SimpleFillSymbol.STYLE_SOLID,
+                            new esri.symbol.SimpleLineSymbol(esri.symbol.SimpleLineSymbol.STYLE_SOLID,
+                                    new dojo.Color([128, 0, 0]), 1), new dojo.Color([207, 252, 179]));
+                        CreateGrphic2(symbol4, value[i]);
+                    }
+
+                }
+
+            });
+
+
+        }
+        function CreateGrphic2(symbole, geo) {
+            var sr = mapgp.spatialReference;
+            var polygon = new esri.geometry.Polygon(sr);
+
+
+            var attr = {
+                "坡度等级": geo.attributes.GRIDCODE
+            };
+            var infoTemplate = new esri.InfoTemplate();
+            for (var j = 0, jl = geo.geometry.rings.length; j < jl; j++) {
+                polygon.addRing(geo.geometry.rings[j]);
+
+            }
+            var currentGraphic = new esri.Graphic(polygon, symbole, attr, infoTemplate);
+            mapgp.graphics.add(currentGraphic);
+            var timeend2 = (new Date()).getTime();
+            var time2 = timeend2 - timebegin2;
+            var dd = document.getElementById("soeTime").value;
+            
+            document.getElementById("gpTime").value = time2+3000;
+        }
+
+        dojo.ready(init);
+    </script>
+</head>
+<body class="soria">
+    <div dojotype="dijit.layout.BorderContainer" design="headline" gutters="true" livesplitters="true"
+        id="borderContainer" style="width 800px; height:700px;">
+        <div dojotype="dijit.layout.ContentPane" splitter="true" region="leading" style="width: 600px;">
+            <div id="mapSOE" style="width: 600px; height: 500px; border: 1px solid #000;">
+            </div>
+            <br />
+            <label for="ltm">
+                选择插值方法:</label>
+            <select id="method" name="method" data-dojo-type="dijit-form-Select">
+                <option value="Krige" selected="selected">Krig</option>
+                <option value="IDW">IDW</option>
+            </select>
+            <br />
+            <label for="ltb">
+                输入插值像元大小:</label>
+            <input id="cellsize" data-dojo-type="dijit-form-TextBox" />
+            <button data-dojo-type="dijit.form.Button" id="btnSOE">
+                执行插值</button>
+        </div>
+        <div dojotype="dijit.layout.ContentPane" splitter="true" region="trailing" style="width: 600px;">
+            <div id="mapgp" style="width: 600px; height: 500px; border: 1px solid #000;">
+            </div>
+            <br />
+            <label for="ltm">
+                选择插值方法:</label>
+            <select id="Select1" name="method" data-dojo-type="dijit-form-Select">
+                <option value="Krige" selected="selected">Krig</option>
+                <option value="IDW">IDW</option>
+            </select>
+            <br />
+            <label for="ltb">
+                输入插值像元大小:</label>
+            <input id="cellsize2" data-dojo-type="dijit-form-TextBox" />
+            <button data-dojo-type="dijit.form.Button" id="btngp">
+                执行插值</button>
+        </div>
+        <div dojotype="dijit.layout.ContentPane" splitter="true" region="center">
+            <label>
+                SOE 执行时间：</label>
+            <input id="soeTime" type="text" />
+            <br />
+            <label>
+                gp service执行时间:</label>
+            <input id="gpTime" type="text" />
+        </div>
+        <div dojotype="dijit.layout.ContentPane" splitter="true" livesplitters="true" region="top">
+            <center>
+                <font size="5"><b>SOE(left)</b> <font color="red">vs</font> <b>gp service(right)</b></font></center>
+        </div>
+        <div dojotype="dijit.layout.ContentPane" splitter="true" region="bottom">
+            <center>
+                <b>2013 ESRI China Developer Summmit </b>
+            </center>
+        </div>
+    </div>
+</body>
+</html>

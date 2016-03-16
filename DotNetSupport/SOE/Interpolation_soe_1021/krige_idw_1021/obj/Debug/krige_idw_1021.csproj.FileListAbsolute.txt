@@ -1,0 +1,6 @@
+D:\vsproject\krige_idw_1021\krige_idw_1021\bin\Debug\krige_idw_1021.dll
+D:\vsproject\krige_idw_1021\krige_idw_1021\bin\Debug\krige_idw_1021.pdb
+D:\vsproject\krige_idw_1021\krige_idw_1021\obj\Debug\krige_idw_1021.dll
+D:\vsproject\krige_idw_1021\krige_idw_1021\obj\Debug\krige_idw_1021.pdb
+D:\vsproject\krige_idw_1021\krige_idw_1021\obj\Debug\krige_idw_1021.csprojResolveAssemblyReference.cache
+D:\vsproject\krige_idw_1021\krige_idw_1021\bin\Debug\krige_idw_1021.soe

@@ -1,0 +1,27 @@
+﻿<?xml version="1.0"?>
+
+<wfs:Transaction service="WFS"
+xmlns:wfs="http://www.opengis.net/wfs"
+xmlns:gml="http://www.opengis.net/gml"
+xmlns:ogc="http://www.opengis.net/ogc">
+  <wfs:LockId>{80064D90-79A1-4B89-9BEB-D5816E9C6E05}</wfs:LockId>
+  <wfs:Update typeName="wfs_wfstest:污染源">
+    <wfs:Property>      
+      <wfs:Name>TIMETEST</wfs:Name>
+      <wfs:Value>
+      <!--<ogc:Function name="dateParse">
+          <ogc:Literal>yyyy-MM-dd</ogc:Literal>
+          <ogc:Literal> 2005-01-01 </ogc:Literal>
+        </ogc:Function>-->
+        2004-11-14T00:37:00
+      </wfs:Value>
+    </wfs:Property>    
+    <ogc:Filter>
+      <ogc:PropertyIsEqualTo>
+        <ogc:PropertyName>OBJECTID</ogc:PropertyName>
+        <ogc:Literal>47</ogc:Literal>
+      </ogc:PropertyIsEqualTo>
+    </ogc:Filter>
+  </wfs:Update>
+</wfs:Transaction>
+

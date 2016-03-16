@@ -1,0 +1,17 @@
+﻿<Window x:Class="TestprojectOfWP.drawPolygonWithHole"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:esri="http://schemas.esri.com/arcgis/client/2009"
+        Title="drawPolygonWithHole" Height="300" Width="300" Loaded="Window_Loaded">
+    <Grid  x:Name="LayoutRoot" >
+        <Grid.Resources>
+            <esri:SimpleFillSymbol x:Key="RedFillSymbol" Fill="#660000FF" BorderBrush="Blue" BorderThickness="2" />
+        </Grid.Resources>
+        <esri:Map x:Name="MyMap" UseAcceleratedDisplay="True"  WrapAround="True" Grid.Column="0">
+            <esri:ArcGISTiledMapServiceLayer ID="TiledLayer" 
+                Url="http://services.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer" />
+            <esri:GraphicsLayer ID="MyToJsonGraphicsLayer" />
+            <esri:GraphicsLayer ID="MyFromJsonGraphicsLayer" />
+        </esri:Map>
+    </Grid>
+</Window>

@@ -1,0 +1,73 @@
+﻿<UserControl
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:esri="http://schemas.esri.com/arcgis/client/2009" x:Class="TestProjectofSL.feature_layer_selection"
+    mc:Ignorable="d"
+    d:DesignHeight="300" d:DesignWidth="400">
+
+    <Grid x:Name="LayoutRoot">
+        <Grid.Resources>
+            <esri:Editor x:Key="MyEditor" Map="{Binding ElementName=MyMap}" LayerIDs="CensusDemographics,CensusDemographics2,CensusDemographics3"
+                         SelectionMode="Rectangle" ContinuousMode="True" EditCompleted="Editor_EditCompleted"/>
+            <esri:SimpleRenderer x:Key="YellowMarkerRenderer">
+                <esri:SimpleRenderer.Symbol>
+                    <esri:SimpleMarkerSymbol Size="20">
+                        <esri:SimpleMarkerSymbol.Color>
+                            <RadialGradientBrush>
+                                <GradientStop Color="Yellow" Offset="0.578"/>
+                                <GradientStop Color="#FF0E0D07" Offset="1"/>
+                            </RadialGradientBrush>
+                        </esri:SimpleMarkerSymbol.Color>
+                    </esri:SimpleMarkerSymbol>
+                </esri:SimpleRenderer.Symbol>
+            </esri:SimpleRenderer>
+        </Grid.Resources>
+
+        <esri:Map x:Name="MyMap" WrapAround="True" esri:Editor.SnapDistance="0">
+            <esri:ArcGISTiledMapServiceLayer ID="BaseLayer" 
+				Url="http://services.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer" />
+            <esri:ArcGISDynamicMapServiceLayer ID="CensusLayer"
+                Url="http://sampleserver1.arcgisonline.com/ArcGIS/rest/services/Demographics/ESRI_Census_USA/MapServer" />
+            <esri:FeatureLayer ID="CensusDemographics" 
+                Url="http://sampleserver1.arcgisonline.com/ArcGIS/rest/services/Demographics/ESRI_Census_USA/MapServer/0"
+                Mode="SelectionOnly" 
+                Renderer="{StaticResource YellowMarkerRenderer}" 
+                OutFields="FIPS,POP2000"
+                                           >             
+            </esri:FeatureLayer>
+
+            <esri:FeatureLayer ID="CensusDemographics2" 
+                Url="http://sampleserver1.arcgisonline.com/ArcGIS/rest/services/Demographics/ESRI_Census_USA/MapServer/0"
+                Mode="SelectionOnly" 
+                Renderer="{StaticResource YellowMarkerRenderer}" 
+                OutFields="FIPS,POP2000"
+                              >
+            </esri:FeatureLayer>
+            
+            <esri:FeatureLayer ID="CensusDemographics3" 
+                Url="http://sampleserver1.arcgisonline.com/ArcGIS/rest/services/Demographics/ESRI_Census_USA/MapServer/0"
+                Mode="SelectionOnly" 
+                Renderer="{StaticResource YellowMarkerRenderer}" 
+                OutFields="FIPS,POP2000"
+                           >
+            </esri:FeatureLayer>
+        </esri:Map>
+
+       
+            <StackPanel  x:Name="EditorToolStrip" Margin="0,5,5,0" DataContext="{StaticResource MyEditor}">
+                <StackPanel x:Name="EditorTools" Orientation="Horizontal">
+                    <Button x:Name="SelectButton" Margin="2" 
+                            Content="New" 
+                            Command="{Binding Select}" 
+                            CommandParameter="New">
+                    </Button>              
+                </StackPanel>
+             
+            </StackPanel>
+        
+
+     
+    </Grid>
+</UserControl>
