@@ -1,0 +1,116 @@
+﻿<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+
+    <!--The viewport meta tag is used to improve the presentation and behavior of the samples 
+      on iOS devices-->
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1,user-scalable=no">
+    <title>Shapes and Symbols</title>
+
+    <link rel="stylesheet" href="http://localhost/jsapi315/esri/css/esri.css">
+
+    <style>
+      #info {
+        top: 20px;
+        color: #444;
+        height: auto;
+        font-family: arial;
+        right: 20px;
+        margin: 5px;
+        padding: 10px;
+        position: absolute;
+        width: 115px;
+        z-index: 40;
+        border: solid 2px #666;
+        border-radius: 4px;
+        background-color: #fff;
+      }
+      html, body, #mapDiv {
+        padding:0;
+        margin:0;
+        height:100%;
+      }
+      button {
+        display: block;
+      }
+    </style>
+      <script src="env.js" type="text/javascript"></script>
+     <!-- <script type="text/javascript" src="http://168.168.11.33:9004/library/3.9/3.9/js/dojo/dojo/dojo.js"></script>-->
+    <script type="text/javascript" src="http://localhost/jsapi315/init.js"></script>
+    <script type="text/javascript">
+      var map, tb;
+      // apiUrl = 'http://168.168.11.33:9004/library/3.9/3.9/'
+      dojo.require("esri.symbols.PictureMarkerSymbol");
+      dojo.require("esri.renderers.SimpleRenderer");
+      dojo.require("esri.renderers.jsonUtils");
+
+      require([
+        "esri/map", "esri/toolbars/draw",
+        "esri/symbols/SimpleMarkerSymbol", "esri/symbols/SimpleLineSymbol",
+        "esri/symbols/PictureFillSymbol", "esri/symbols/CartographicLineSymbol",
+        "esri/graphic",
+        "esri/Color", "dojo/dom", "dojo/on", "dojo/domReady!"
+      ], function (
+        Map, Draw,
+        SimpleMarkerSymbol, SimpleLineSymbol,
+        PictureFillSymbol, CartographicLineSymbol,
+        Graphic,
+        Color, dom, on
+      ) {
+          map = new Map("mapDiv", {
+              basemap: "streets",
+              center: [-25.312, 34.307],
+              zoom: 3
+          });
+          /*以下两行为测试代码，转为renderer后宽，高变化了宽24高36*/
+          debugger;
+ var simpleJson = {
+    "type": "simple",
+    "label": "",
+    "description": "",
+    "symbol": {
+      "color": [210,105,30,191],
+      "size": 6,
+      "angle": 0,
+      "xoffset": 0,
+      "yoffset": 0,
+      "type": "esriSMS",
+      "style": "esriSMSCircle",
+      "outline": {
+        "color": [0,0,128,255],
+        "width": 0,
+        "type": "esriSLS",
+        "style": "esriSLSSolid"
+      }
+    }
+  }
+          /*var renderJson = {
+              "type": "simple",
+              "description": "控规地块",
+              "label": "BLK",
+              "symbol": {
+                  "type": "esriPMS",
+                  "angle": 0,
+                  "xoffset": 0,
+                  "yoffset": 15,
+                  "width": 18,
+                  "height": 27,
+                  "url": "layouts/default/Image/phalnax.png"
+              }
+
+          }
+*/
+          var render = esri.renderers.jsonUtils.fromJson(simpleJson);
+          /******************************************************************/
+      }
+        );
+    </script>
+  </head>
+  
+  <body>
+    
+   <div id="mapDiv"></div>
+
+  </body>
+</html>

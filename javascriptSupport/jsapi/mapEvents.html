@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1,user-scalable=no">
+    <title>Shapes and Symbols</title>
+    <link rel="stylesheet" href="http://192.168.100.82/jsapi316/esri/css/esri.css">
+    <style>
+        #info {
+            top: 20px;
+            color: #444;
+            height: auto;
+            font-family: arial;
+            right: 20px;
+            margin: 5px;
+            padding: 10px;
+            position: absolute;
+            width: 115px;
+            z-index: 40;
+            border: solid 2px #666;
+            border-radius: 4px;
+            background-color: #fff;
+        }
+
+        html, body, #mapDiv {
+            padding: 0;
+            margin: 0;
+            height: 100%;
+        }
+
+        button {
+            display: block;
+        }
+    </style>
+
+    <script src="http://192.168.100.82/jsapi316/init.js"></script>
+    <script>
+        var map, tb;
+
+        require([
+            "esri/map", "esri/toolbars/draw", "esri/geometry/Extent", "esri/layers/ArcGISDynamicMapServiceLayer",
+            "esri/symbols/SimpleMarkerSymbol", "esri/symbols/SimpleLineSymbol",
+            "esri/symbols/PictureFillSymbol", "esri/symbols/CartographicLineSymbol",
+            "esri/graphic", "esri/layers/GraphicsLayer",
+            "esri/SpatialReference", "esri/dijit/InfoWindowLite", "dojo/dom-construct", "esri/InfoTemplate", "esri/layers/FeatureLayer",
+            "esri/Color", "dojo/dom", "dojo/on", "dojo/domReady!"
+        ], function (Map, Draw, Extent, ArcGISDynamicMapServiceLayer,
+                     SimpleMarkerSymbol, SimpleLineSymbol,
+                     PictureFillSymbol, CartographicLineSymbol,
+                     Graphic, GraphicsLayer,
+                     SpatialReference, InfoWindowLite, domConstruct, InfoTemplate, FeatureLayer,
+                     Color, dom, on) {
+
+            var extent = new Extent(8176078.237599999, 704818.0274999999, 1.50376858856E7, 7086873.4196000025, new SpatialReference({wkid: 3857}))
+            var tiledLyer = new ArcGISDynamicMapServiceLayer("http://192.168.220.64:6080/arcgis/rest/services/test/chinaPopulation/MapServer");
+            map = new Map("mapDiv", {
+                extent: extent,
+            });
+
+
+            map.on("layer-add-result", function (evt) {
+                console.log(evt);
+
+            });
+
+
+            map.addLayer(tiledLyer);
+            /*   map.addLayer(flyr);*/
+
+
+        });
+    </script>
+</head>
+
+<body>
+
+
+<div id="mapDiv"></div>
+
+</body>
+</html>
+ 

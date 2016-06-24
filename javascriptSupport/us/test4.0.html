@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1,user-scalable=no"/>
+    <title>ArcGIS API TEST</title>
+    <link rel="stylesheet" href="http://localhost/jsapi403/dijit/themes/claro/claro.css"/>
+    <link rel="stylesheet" href="http://localhost/jsapi403/esri/css/main.css"/>
+    <style>
+        html, body, #ui-map-view {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+        }
+    </style>
+    <script src="http://localhost/jsapi403/init.js"></script>
+    <script>
+        var myMap, view;
+        require([
+            "esri/Basemap",
+            "esri/layers/ArcGISTiledLayer",
+            "esri/Map",
+            "esri/views/MapView",
+            "esri/config",
+            "dojo/domReady!"
+        ], function (Basemap, ArcGISTiledLayer, Map, MapView, esriConfig) {
+            // --------------------------------------------------------------------
+            // note that if you do not have public Internet access then you will need to
+            // use the Basemap class and point this url to your own
+            // locally accessible cached service.
+            //
+            // Otherwise you can just use one of the named hosted ArcGIS services.
+            // --------------------------------------------------------------------
+            var layer = new ArcGISTiledLayer({
+                url: "http://atlasmaps.esri.com/arcgis/rest/services/Census2010/Predominant_Population/MapServer"
+            });
+
+           esriConfig.request.proxyUrl ="http://localhost:8888/java/proxy.ashx";
+            esriConfig.request.alwaysUseProxy=true;
+
+            var customBasemap = new Basemap({
+                baseLayers: [layer],
+                title: "Custom Basemap",
+                id: "myBasemap"
+            });
+            myMap = new Map({
+                basemap: customBasemap
+            });
+            view = new MapView({
+
+                container: "ui-map-view",
+                map: myMap,
+
+            });
+        });
+    </script>
+</head>
+<body class="claro">
+<div id="ui-map-view"></div>
+</body>
+</html>

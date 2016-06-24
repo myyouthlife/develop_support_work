@@ -1,0 +1,80 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title>二三维联动测试</title>
+
+    <!--ArcGis For JavaScript API依赖样式文件-->
+    <link href="http://localhost/jsapi315/esri/css/esri.css" rel="stylesheet" type="text/css" />
+
+    <!--ArcGis For JavaScript API依赖JS文件-->
+    <script type="text/javascript" src="http://localhost/jsapi315/init.js"></script>
+
+    <script type="text/javascript">
+
+        var Map1;
+
+        var Map2;
+
+        //Map1事件对象
+        var handler;
+
+        //Map2事件对象
+        var handler2;
+
+        //Map1范围改变事件
+        function Map1_YD(obj) {
+            //注销Map2的地图范围改变事件
+            dojo.disconnect(handler2);
+            //设置Map2的显示范围
+            Map2.setExtent(obj.extent);
+            //重新监听Map2的地图范围改变事件
+            Map2_SetHandler();
+        };
+
+        //Map2范围改变事件
+        function Map2_YD(obj) {
+            //注销Map1的地图范围改变事件
+            dojo.disconnect(handler);
+            //设置Map2的显示范围
+            Map1.setExtent(obj.extent);
+            //重新监听Map1的地图范围改变事件
+            Map1_SetHandler();
+        };
+
+        //Map1添加监听事件方法
+        function Map1_SetHandler() {
+            handler = Map1.on("extent-change", Map1_YD);
+        };
+
+        //Map2添加监听事件方法
+        function Map2_SetHandler() {
+            handler2 = Map2.on("extent-change", Map2_YD);
+        };
+
+        //加载事件
+        window.onload = function () {
+
+            Map1 = new esri.Map("Main_Map_1");
+            var tiledMapLayer = new esri.layers.ArcGISTiledMapServiceLayer("http://server.arcgisonline.com/arcgis/rest/services/ESRI_Imagery_World_2D/MapServer");
+            Map1.addLayer(tiledMapLayer);
+            Map1_SetHandler();
+
+            Map2 = new esri.Map("Main_Map_2");
+            var tiledMapLayer2 = new esri.layers.ArcGISTiledMapServiceLayer("http://server.arcgisonline.com/arcgis/rest/services/ESRI_Imagery_World_2D/MapServer");
+            Map2.addLayer(tiledMapLayer2);
+            Map2_SetHandler();
+
+        };
+
+    </script>
+
+</head>
+<body>
+
+    <div id="Main_Map_1" style="width:300px; height:300px; float:left; margin-right:5px; border:1px solid #000000;"></div>
+
+    <div id="Main_Map_2" style="width:300px; height:300px; float:left; margin-left:5px; border:1px solid #000000;"></div>
+
+</body>
+</html>

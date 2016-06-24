@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8"/>
+    <title>AngularJS</title>
+    <link rel="stylesheet"
+          href="http://ajax.googleapis.com/ajax/libs/dojo/1.9.1/dijit/themes/claro/claro.css"/>
+</head>
+<body class="claro">
+<div ng-controller="TestCtrl" id="test_ctrl">
+    <p ng-show="!btn_disable">
+        <button ng-click="change()">调用dojo修改按钮</button>
+    </p>
+
+    <p id="btn_wrapper">
+        <button data-dojo-type="dijit/form/Button" type="button">{{ a }}</button>
+    </p>
+
+    <p>
+        <input ng-model="dialog_text" ng-init="dialog_text='对话框内容'"/>
+        <button ng-click="dialog(dialog_text)">显示对话框</button>
+    </p>
+
+    <p ng-show="show_edit_text" style="display: none;">
+        <span>需要编辑的内容:</span>
+        <input ng-model="text"/>
+    </p>
+
+    <div id="editor_wrapper">
+        <div data-dojo-type="dijit/Editor" id="editor"></div>
+    </div>
+
+</div>
+<script src="http://ajax.googleapis.com/ajax/libs/dojo/1.9.1/dojo/dojo.js">
+</script>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js">
+</script>
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/angularjs/1.0.3/angular.min.js"></script>
+
+<script type="text/javascript">
+    require(['dojo/parser', 'dijit/Editor'], function (parser) {
+        parser.parse($('#editor_wrapper')[0]).then(function () {
+            var app = angular.module('Demo', [], angular.noop);
+
+            app.controller('TestCtrl', function ($scope, $timeout) {
+                $scope.a = '我是ng, 也是dojo';
+                $scope.show_edit_text = true;
+
+                $scope.change = function () {
+                    $scope.a = 'DOM结构已经改变(不建议这样做)';
+                    require(['dojo/parser', 'dijit/form/Button', 'dojo/domReady!'],
+                            function (parser) {
+                                parser.parse($('#btn_wrapper')[0]);
+                                $scope.btn_disable = true;
+                            }
+                    );
+                }
+
+                $scope.dialog = function (text) {
+                    require(["dijit/Dialog", "dojo/domReady!"], function (Dialog) {
+                        var dialog = new Dialog({
+                            title: "对话框哦",
+                            content: text,
+                            style: "width: 300px"
+                        });
+                        dialog.show();
+                    });
+                }
+
+                require(['dijit/registry'], function (registry) {
+                    var editor = registry.byId('editor');
+                    $scope.$watch('text', function (new_v) {
+                        editor.setValue(new_v);
+                    });
+                });
+
+            });
+
+            angular.bootstrap(document, ['Demo']);
+        });
+
+    });
+
+</script>
+</body>
+</html>

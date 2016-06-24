@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <link rel="stylesheet" href="http://192.168.100.82/jsapi315/dijit/themes/claro/claro.css">
+    <link rel="stylesheet" href="http://192.168.100.82/jsapi315/esri/css/esri.css">
+    <style type="text/css">
+        html, body {
+            width: 100%;
+            height: 100%;
+            margin: 0;
+            overflow: hidden;
+        }
+
+        #borderContainerTwo {
+            width: 100%;
+            height: 100%;
+        }
+
+        #borderleft {
+            width: 70%;
+        }
+
+        #myMap {
+            height: 100%;
+        }
+
+        #inputURL {
+
+            height: 100%;
+            width: 50%;
+        }
+
+        #divURL {
+
+            height: 100%;
+            width: 40%;
+        }
+
+        #btnaddLayer {
+
+            width: 10%;
+        }
+    </style>
+
+
+    <script src='http://192.168.100.82/jsapi315/init.js'></script>
+    <script src="http://192.168.100.82:8080/angular.min.js"></script>
+    <script type="text/javascript">
+        dojoConfig = {
+            locale: "zh-cn",
+            parseOnLoad: true
+        };
+   var app = angular.module('myApp', []);
+    app.controller('myCtrl', function($scope) {
+        $scope.myfunction=function() {
+            require(["dojo/parser", "esri/map", "esri/geometry/Extent", "esri/geometry/Point", "esri/geometry/screenUtils","esri/SpatialReference"],
+                    function (Map, Extent, Point, esriscreenUtils,SpatialReference) {
+                        var point=new Point($scope.mapPoint,new SpatialReference({wkid:3857}));
+
+                        var esriscreenUtils=new esriscreenUtils();
+                        var result_geometry=esriscreenUtils.toMapGeometry()
+                    });
+
+        }
+
+
+    });
+
+
+    </script>
+
+</head>
+<body class="claro" ng-app="myApp" ng-controller="myCtrl">
+<div >
+    <p>please input the point:</p>
+    <p>Name: <input type="text" ng-model="mapPoint" ng-blur="myfunction()"></p>
+    <p>Converted point:<p >{{ mapPoint2}}</p></p>
+</div>
+</div>
+</body>
+</html>

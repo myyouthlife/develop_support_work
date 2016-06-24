@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>动态添加rasterdataset</title>
+    <link rel="import" href="../common_refence.html">
+
+    <style>
+        html, body, #map {
+            height: 80%;
+            margin: 0;
+            padding: 0;
+        }
+    </style>
+</head>
+<body>
+<div id="map"></div>
+<div>
+    <button id="addLayer">添加影像</button>
+</div>
+
+<script>
+    require([
+                "esri/layers/DynamicLayerInfo",
+                "esri/layers/QueryDataSource",
+                "esri/layers/LayerDataSource",
+                "esri/layers/RasterDataSource",
+                "esri/layers/ArcGISDynamicMapServiceLayer",
+            "esri/map"],
+            function (DynamicLayerInfo, QueryDataSource, LayerDataSource, RasterDataSource,ArcGISDynamicMapServiceLayer,Map) {
+                var url="http://localhost:6080/arcgis/rest/services/test/rasterDataSetTest/MapServer";
+                var dynamicData=new ArcGISDynamicMapServiceLayer(url);
+                var map=Map("map");
+                map.addLayer(dynamicData)
+
+                document.getElementById('addLayer').onclick = function () {
+
+                    var dynamicLayerInfos = [];
+                    var dynamicLayerInfo = new DynamicLayerInfo();
+                    dynamicLayerInfo.id = 1;
+                    var dataSource = new RasterDataSource();
+                    dataSource.workspaceId = "MyRasterWorkspaceID";
+                    dataSource.dataSourceName = "090161.tif";
+
+                    var layerSource = new LayerDataSource();
+                    layerSource.dataSource = dataSource;
+                    dynamicLayerInfo.source = layerSource;
+                    dynamicLayerInfos.push(dynamicLayerInfo);
+
+                    dynamicData.setDynamicLayerInfos(dynamicLayerInfos);
+
+                };
+
+
+            }
+    );
+</script>
+</body>
+</html>

@@ -1,0 +1,169 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="content-type" content="text/html" charset="utf-8" />
+<title></title>
+  <style>
+    body { margin:0; padding:0; }
+    #map { position: absolute; top:0; bottom:0; right:0; left:0; }
+  </style>
+<!--ArcGIS JS API样式-->
+<link rel="stylesheet" type="text/css"
+	href="http://113.200.80.145:9090/arcgis_js_api/esri/css/esri.css" />
+<link rel="stylesheet" type="text/css"
+	href="http://113.200.80.145:9090/arcgis_js_api/dijit/themes/tundra/tundra.css" />
+
+
+<!--ArcGIS JS API,用来加载ArcGIS API for JavaScript-->
+<script type="text/javascript"
+	src="http://113.200.80.145:9090/arcgis_js_api/init.js"></script>
+
+
+<script src="http://113.200.80.145:9090/arcgis_js_api/jquery-1.11.1.min.js"></script>
+
+<script>
+  var distance=5;
+  var sLat=34.29;
+  var sLng=108.94;
+  var sUrl="http://1.85.55.27:8080/ServiceSystem/services/rest/SxBaseMap/n4*fWvbmXOtGHSLL/TileServer";
+
+	var map;
+    var gmlyer,gl,mk,picK,txtMk,picm;
+	var isdrag=false;
+	//require([ "esri/map", "esri/geometry/Circle","esri/geometry/Point", "esri/layers/ArcGISTiledMapServiceLayer",
+	//		"esri/symbols/SimpleLineSymbol","esri/symbols/SimpleFillSymbol", "esri/graphic","esri/symbols/PictureMarkerSymbol",
+	//		"esri/layers/GraphicsLayer", "dojo/dom", "dojo/dom-attr",
+	//		"dojo/domReady!"], function(Map, Circle,Point, ArcGISTiledMapServiceLayer, SimpleLineSymbol,SimpleFillSymbol,
+	//		Graphic,PictureMarkerSymbol, GraphicsLayer, dom, domAttr) {
+	      require([
+		  "dojo/ready",
+     "dojo/on",
+     "dojo/_base/connect",
+	  "dojo/dom",
+      "dojo/dom-attr",
+      "dojo/_base/array",
+      "esri/Color",
+      "dojo/number",
+      "dojo/parser",
+      "dijit/registry",
+
+      "esri/config",
+      "esri/map",
+	  "esri/geometry/Circle",
+	  "esri/geometry/Point",
+      "esri/graphic",
+	  "esri/layers/ArcGISTiledMapServiceLayer",
+      "esri/tasks/GeometryService",
+      "esri/tasks/BufferParameters",
+      "esri/toolbars/draw",
+      "esri/symbols/SimpleMarkerSymbol",
+      "esri/symbols/SimpleLineSymbol",
+      "esri/symbols/SimpleFillSymbol",
+	  "esri/symbols/PictureMarkerSymbol",
+	  "esri/layers/GraphicsLayer",
+      "esri/symbols/Font",
+      "esri/symbols/TextSymbol",
+
+      "dijit/layout/BorderContainer",
+      "dijit/layout/ContentPane"
+  ], function(ready,on,connect,dom, domAttr, array, Color, number, parser, registry, esriConfig, Map,Circle,Point, Graphic,ArcGISTiledMapServiceLayer, GeometryService, BufferParameters, Draw,
+              SimpleMarkerSymbol, SimpleLineSymbol, SimpleFillSymbol,PictureMarkerSymbol,GraphicsLayer, Font, TextSymbol) {	
+		parser.parse();
+		  //创建地图
+        map = new Map("map", {
+            logo: false,
+			nav:false,
+            slider:false
+        });
+
+     
+       	gmlyer = new GraphicsLayer({
+			id : "pointM"
+		});
+		
+		gl = new GraphicsLayer({
+			id : "circles"
+		});
+		txtMk=new GraphicsLayer({
+			id : "texLyer"
+		}); 
+        picK=new GraphicsLayer({
+			id : "picLyer"
+		}); 
+        //定义服务并添加到map中
+        var tiled = new ArcGISTiledMapServiceLayer(sUrl,{ id: "firMap"});
+		//地图瓦片
+
+
+
+       
+        map.addLayer(tiled);
+		map.addLayer(gl);
+        map.addLayer(gmlyer);
+		map.addLayer(picK);
+		map.addLayer(txtMk);
+		into(sLat, sLng,distance);
+		/**
+ * 初始点定位，根据半径绘制影响范围
+ * @param sY 纬度
+ * @param sX 经度
+ * @param sR 半径 公里
+ */
+function into(sY,sX,sR)
+{
+	
+	mk=DrawPointR(sY,sX,25,41,"Flag.png","","",false)
+        //给mk添加鼠标事件
+       connect.connect(map.graphics, "onClick", function(e){
+ 
+          alert("1");
+ 
+});
+
+	gmlyer.add(mk);
+	
+}
+
+
+/**
+ * 绘制一个标记点
+ * @param sLat 坐标纬度
+ * @param sLng 坐标经度
+ * @param sizeW 图片宽度
+ * @param sizeH 图片高度
+ * @param sIcon 图片名称包括扩展名（XX.png）
+ * @param attribute 属性信息
+ * @param popUphtml  点击点时候弹出窗体-html标签
+ * @param isDragable 是否可拖拽 false-不可 true-可以
+ * @returns 返回标记
+ */
+function DrawPointR(sLat,sLng,sizeW,sizeH,sIcon,attribute,popUphtml,isDragable)
+{
+
+
+    var picSymbol = new PictureMarkerSymbol(sIcon,sizeW,sizeH);
+	var point = new Point(sLng, sLat);
+	
+	var mark = new Graphic(point, picSymbol,attribute);
+
+	if(popUphtml!="" && popUphtml!=null)
+	{
+	var infoTemplate = new esri.InfoTemplate("信息", popUphtml); 
+    mark.setInfoTemplate(infoTemplate);
+	}
+    return mark;
+}
+
+
+  });
+
+</script>
+</head>
+<body>
+	<div id="map" ></div>
+       <div id="info" class="esriSimpleSlider">
+
+      <button id="clear" data-dojo-type="dijit.form.Button">Clear Graphics</button>
+    </div>
+</body>
+</html>

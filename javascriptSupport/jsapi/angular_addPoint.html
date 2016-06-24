@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <link rel="stylesheet" href="http://192.168.100.82/jsapi315/dijit/themes/claro/claro.css">
+    <link rel="stylesheet" href="http://192.168.100.82/jsapi315/esri/css/esri.css">
+    <style type="text/css">
+        html, body {
+            width: 100%;
+            height: 100%;
+            margin: 0;
+            overflow: hidden;
+        }
+
+        #borderContainerTwo {
+            width: 100%;
+            height: 100%;
+        }
+
+        #borderleft {
+            width: 70%;
+        }
+
+        #myMap {
+            height: 100%;
+        }
+        #inputURL{
+
+            height:100%;
+            width:50%;
+        }
+        #divURL{
+
+              height:100%;
+            width:40%;
+        }
+        #btnaddLayer{
+
+            width:10%;
+        }
+    </style>
+
+    <script src='http://192.168.100.82/jsapi315/init.js'></script>
+    <script src="http://192.168.100.82:8080/terraformer/terraformer.min.js"></script>
+    <script src="http://192.168.100.82:8080/terraformer-arcgis-parser/terraformer-arcgis-parser.min.js"></script>
+    <script src="http://192.168.100.82:8080/terraformer-wkt-parser/terraformer-wkt-parser.min.js"></script>
+    <script src="http://192.168.100.82:8080/angular.min.js"></script>
+    <script type="text/javascript">
+        dojoConfig = {
+            locale: "zh-cn",
+            parseOnLoad: true
+        };
+    </script>
+     <script src="../js/angular_addPoint.js" >    </script>
+</head>
+<body class="claro">
+<div data-dojo-type="dijit/layout/BorderContainer" data-dojo-props="gutters:true, liveSplitters:false"
+     id="borderContainerTwo" ng-app="myApp" ng-controller="myCtrl">
+    <div data-dojo-type="dijit/layout/ContentPane" data-dojo-props="region:'top', splitter:false" id="borderHeader">
+       <div id="divURL" >featureLayer URL:</div>
+        <input tpye="text"  id="inputURL" ng-model="layerUrl" />
+        <button id="btnaddLayer" ng-init="addLayer='Click to add Layer'" ng-click="addLayerEvent()">{{addLayer}}</button>
+    </div>
+    <div data-dojo-type="dijit/layout/ContentPane" data-dojo-props="region:'left', splitter:false" id="borderleft">
+        <div id="myMap " ng-model="createMap" ng-init="createMap()"></div>
+    </div>
+
+    <div data-dojo-type="dijit/layout/TabContainer" data-dojo-props="region:'center', tabStrip:true">
+        <div data-dojo-type="dijit/layout/ContentPane" title="To Json" selected="true">
+        </div>
+    </div>
+    <!-- end TabContainer -->
+</div>
+<!-- end BorderContainer -->
+
+
+</body>
+</html>

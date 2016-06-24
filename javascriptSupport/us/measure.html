@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no">
+    <title>Geometry Service: Label Points</title>
+
+    <link rel="stylesheet" href="http://localhost/jsapi316/dijit/themes/nihilo/nihilo.css">
+    <link rel="stylesheet" href="http://localhost/jsapi316/esri/css/esri.css">
+    <style>
+        html, body, #mapDiv {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            width: 100%;
+        }
+
+        #info {
+            bottom: 20px;
+            color: #444;
+            height: auto;
+            font-family: arial;
+            left: 20px;
+            margin: 5px;
+            padding: 10px;
+            position: absolute;
+            width: 200px;
+            z-index: 40;
+        }
+    </style>
+
+    <script src="http://localhost/jsapi316/init.js"></script>
+    <script>
+        require(["dojo/dom",
+            "dojo/dom-attr",
+            "dojo/_base/array",
+            "esri/Color",
+            "dojo/number",
+            "dojo/parser",
+            "dijit/registry",
+            "esri/config",
+            "esri/map",
+            "esri/graphic",
+            "esri/tasks/GeometryService",
+            "esri/tasks/BufferParameters",
+            "esri/toolbars/draw",
+            "esri/symbols/SimpleMarkerSymbol",
+            "esri/symbols/SimpleLineSymbol",
+            "esri/symbols/SimpleFillSymbol",
+            "esri/symbols/Font",
+            "esri/symbols/TextSymbol", "esri/layers/ArcGISTiledMapServiceLayer",
+
+            "dijit/layout/BorderContainer",
+            "dijit/layout/ContentPane",
+            "esri/tasks/AreasAndLengthsParameters",
+            "esri/tasks/LengthsParameters",
+            "esri/request"
+        ], function (dom, domAttr, array, Color, number, parser, registry, esriConfig, Map, Graphic, GeometryService, BufferParameters, Draw,
+                     SimpleMarkerSymbol, SimpleLineSymbol, SimpleFillSymbol, Font, TextSymbol, ArcGISTiledMapServiceLayer,
+                     AreasAndLengthsParameters, LengthsParameters, esriRequest) {
+
+            var map, toolbar, geometryService;
+
+            parser.parse();
+
+            // create the map control
+            map = new Map("mapDiv", {
+                center: [-117.215, 34.05],
+            });
+            var baseMap = "http://server.arcgisonline.com/ArcGIS/rest/services/ESRI_StreetMap_World_2D/MapServer";
+            var baseMap2 = 'http://192.168.220.64:6080/arcgis/rest/services/cacheTest/MyMapService_image/MapServer';
+            var gmUrl = 'http://192.168.220.64:6080/arcgis/rest/services/Utilities/Geometry/GeometryServer/lengths';
+            var baselayer = new ArcGISTiledMapServiceLayer(baseMap, {
+                "id": "basellayer",
+                "opacity": 1
+            });
+            map.addLayer(baselayer);
+            // configure the proxy url for the application
+            esriConfig.defaults.io.proxyUrl = "http://localhost/DotNet/proxy.ashx";
+            esriConfig.defaults.io.alwaysUseProxy = false;
+
+            // create a toolbar for the map
+            toolbar = new Draw(map);
+            toolbar.on("draw-end", addToMap);
+            geometryService = new GeometryService("http://192.168.220.64:6080/arcgis/rest/services/Utilities/Geometry/GeometryServer?f=json");
+            geometryService.on("onLengthsComplete", outputDistance);
+            // activate a drawing tool when a button is clicked
+            registry.byId("polygon").on("click", function () {
+                toolbar.activate(Draw.POLYGON);
+                map.hideZoomSlider();
+            });
+            registry.byId("freehand").on("click", function () {
+                toolbar.activate(Draw.POLYLINE);
+                map.hideZoomSlider();
+            });
+            registry.byId("clear").on("click", function () {
+                map.graphics.clear();
+            });
+
+
+            function addToMap(evtObj) {
+                map.graphics.clear();
+                var geometry = evtObj.geometry;
+                measuregeometry = geometry;
+                // add the drawn graphic to the map
+                var symbol = new SimpleLineSymbol();
+                var graphicss = new Graphic(measuregeometry, symbol);
+                map.graphics.add(graphicss);
+                MeasureGeometry(geometry);
+                // simplify polygon so it can be used in the get label points request
+                // geometryService.simplify([geometry], getLabelPoints);
+            }
+
+            function MeasureGeometry(geometry) {
+                //如果为线类型就进行lengths距离测算
+                if (geometry.type == "polyline") {
+                    alert("line");
+                    var lengthParams = new LengthsParameters();
+                    console.log(measuregeometry);
+                    console.log(geometry);
+                    lengthParams.polylines = [JSON.stringify(geometry)];
+                    console.log(JSON.stringify([geometry]));
+                    lengthParams.lengthUnit = esri.tasks.GeometryService.UNIT_METER;
+                    lengthParams.calculationType = 'geodesic';
+                    lengthParams.geodesic = true;
+                    // lengthParams.polylines[0].spatialReference = new esri.SpatialReference(4326);
+                    console.log(JSON.stringify(geometryService));
+                    geometryService.lengths(lengthParams);
+
+                 /*   var gmRequest = esriRequest({
+                        "url": gmUrl,
+                        "content": {
+                            "sr": 4326,
+                            "polylines": JSON.stringify([geometry]),
+                            "lengthUnit": '9001',
+                            "calculationType": 'geodesic'
+                        },
+                        "handleAs": "json"
+                    });
+                    gmRequest.then(
+                            function (response) {
+                                console.log(response);
+                            }, function (err) {
+
+                                console.log(err)
+                            }
+                    )*/
+
+
+
+
+                }
+                //如果为面类型需要先进行simplify操作在进行面积测算
+                else if (geometry.type == "polygon") {
+                    alert("789");
+                    var areasAndLengthParams = new AreasAndLengthsParameters();
+                    areasAndLengthParams.lengthUnit = esri.tasks.GeometryService.UNIT_METER;
+                    areasAndLengthParams.areaUnit = esri.tasks.GeometryService.UNIT_SQUARE_METERS;
+                    this.outSR = new esri.SpatialReference({wkid: 102113});
+                    geometryService.project([geometry], this.outSR, function (geometry) {
+                        geometryService.simplify(geometry, function (simplifiedGeometries) {
+                            areasAndLengthParams.polygons = simplifiedGeometries;
+                            areasAndLengthParams.polygons[0].spatialReference = new esri.SpatialReference(102113);
+                            geometryService.areasAndLengths(areasAndLengthParams);
+                        });
+                    });
+                    geometryService.on("onAreasAndLengthsComplete", outputAreaAndLength);
+
+                }
+            }
+
+//显示测量距离  
+            function outputDistance(result) {
+                console.log(result);
+                alert("123");
+                var CurX = measuregeometry.paths[0][measuregeometry.paths[0].length - 1][0];
+                var CurY = measuregeometry.paths[0][measuregeometry.paths[0].length - 1][1];
+                var CurPos = new esri.geometry.Point(CurX, CurY, myMap.spatialReference);
+                myMap.infoWindow.setTitle("距离测量");
+                myMap.infoWindow.setContent(" 测 量 长 度 ： <strong>" + parseInt(String(result.lengths[0])) + "米</strong>");
+                myMap.infoWindow.show(CurPos);
+            }
+
+            //显示测量面积
+            function outputAreaAndLength(result) {
+                var CurX = (measuregeometry._extent.xmax + measuregeometry._extent.xmin) / 2;
+                var CurY = (measuregeometry._extent.ymax + measuregeometry._extent.ymin) / 2
+                var CurPos = new esri.geometry.Point(CurX, CurY, myMap.spatialReference);
+                map.infoWindow.setTitle("面积测量");
+                map.infoWindow.setContent(" 面积 ： <strong>" + parseInt(String(result.areas[0])) + "平方米</strong> 周长：" + parseInt(String(result.lengths[0])) + "米");
+                map.infoWindow.show(CurPos);
+            }
+
+            //alert("面积：" + dojo.number.format(result.areas[0]) + "平方米" + " 长度：" + dojo.number.format(result.lengths[0]) + "米");
+            function getLabelPoints(geometries) {
+                if (geometries[0].rings.length > 0) {
+                    geometryService.labelPoints(geometries, function (labelPoints) { // callback
+                        toolbar.deactivate();
+                        map.showZoomSlider();
+
+                        var font = new Font("20px", Font.STYLE_NORMAL, Font.VARIANT_NORMAL, Font.WEIGHT_BOLDER);
+                        array.forEach(labelPoints, function (labelPoint) {
+                            // create a text symbol
+                            var textSymbol = new TextSymbol(
+                                    "X: " + number.format(labelPoint.x) + ", Y: " + number.format(labelPoint.y),
+                                    font, new Color([0, 0, 0]));
+
+                            var labelPointGraphic = new Graphic(labelPoint, textSymbol);
+
+                            // add the label point graphic to the map
+                            map.graphics.add(labelPointGraphic);
+                        });
+                    });
+                } else {
+                    alert("Invalid Polygon - must have at least 3 points");
+                }
+            }
+        });
+    </script>
+
+</head>
+
+<body class="nihilo">
+<div id="mapDiv"></div>
+<div id="info" class="esriSimpleSlider">
+    <button id="polygon" data-dojo-type="dijit.form.Button">Polygon</button>
+    <button id="freehand" data-dojo-type="dijit.form.Button">POLYLINE</button>
+    <button id="clear" data-dojo-type="dijit.form.Button">Clear Graphics</button>
+</div>
+</body>
+
+</html>

@@ -1,17 +1,17 @@
-#coding:utf-8
 import urllib
-import arcpy
-# import couchdb
-#
-# couch = couchdb.Server('http://192.168.142.141:29080/')
-# db=couch.create('test')
-# db = couchdb.Database("http://your.url/yourdb")
-# db.resource.http.add_credentials(username, password)
-parameters = urllib.urlencode({'item': "我去",
-                               'text':"你大爷",
-                               'overwrite': 'false',
-                               'thumbnailurl': "ddd",
-                               'token' : "ni",
-                               'f' : 'json'})
+import json
+from datetime import *
 
-print parameters
+print "begin to request services:"
+t_begin2=datetime.now()
+url="	http://192.168.220.80:6080/arcgis/rest/services/Untitled/MapServer?f=pjson"
+
+
+
+jsonResponse = urllib.urlopen(url, urllib.urlencode(''))
+if jsonResponse.getcode()==200:
+    result=json.loads(jsonResponse.read())
+    print result
+    t_end2=datetime.now()
+         
+    print "instantiated time:"+str((t_end2-t_begin2).seconds)

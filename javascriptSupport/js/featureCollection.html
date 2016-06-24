@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1,user-scalable=no">
+    <title>Flickr</title>
+
+    <link rel="stylesheet" href="http://localhost/jsapi316/esri/css/esri.css">
+    <style>
+      html, body, #map {
+        height:100%;
+        width:100%;
+        margin:0;
+        padding:0;
+      }
+      .esriScalebar{
+        padding: 20px 20px;
+      }
+      #map{
+        padding:0;
+      }
+    </style>
+
+    <script>var dojoConfig = { parseOnLoad: true };</script>
+    <script src="http://localhost/jsapi316/init.js"></script>
+    <script>
+      var map;
+      require([
+        "esri/map",
+        "esri/layers/FeatureLayer",
+        "esri/dijit/PopupTemplate",
+        "esri/request",
+        "esri/geometry/Point",
+        "esri/graphic",
+        "dojo/on",
+        "dojo/_base/array",
+        "dojo/domReady!"
+      ], function(
+        Map,
+        FeatureLayer,
+        PopupTemplate,
+        esriRequest,
+        Point,
+        Graphic,
+        on,
+        array
+      ) {
+
+        var featureLayer;
+
+        map = new Map("map", {
+          basemap: "satellite",
+          center: [-46.807, 32.553],
+          zoom: 3
+        });
+
+        //hide the popup if its outside the map's extent
+
+
+        map.on("layers-add-result", function(results) {
+          requestPhotos();
+        });
+        //add the feature layer that contains the flickr photos to the map
+        map.addLayers([featureLayer]);
+
+      function requestPhotos() {
+        //get geotagged photos from flickr
+        //tags=flower&tagmode=all
+        var requestHandle = esriRequest({
+          url: "https://api.flickr.com/services/feeds/geo?&format=json",
+          callbackParamName: "jsoncallback"
+        });
+        requestHandle.then(requestSucceeded, requestFailed);
+      }
+
+
+
+
+    });
+    </script>
+  </head>
+  <body >
+    <div id="map"></div>
+  </body>
+
+</html>
+ 

@@ -1,0 +1,39 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="initial-scale=1, maximum-scale=1,user-scalable=no">
+  <title>My Application</title>
+  <link rel="stylesheet" href="/jsapi315/esri/css/esri.css">
+  <style>
+  html,body,#mapDiv{
+   height:100%;
+   margin:0;
+   padding:0:
+     
+  }
+    </style>
+  <script src="http://localhost/jsapi315/init.js"></script>
+  <script>
+  var map;
+  require(["esri/config","esri/map",
+  "esri/layers/ArcGISDynamicMapServiceLayer",
+  "dojo/domReady!"],function(esriConfig,Map,ArcGISDynamicMapServiceLayer){
+    esriConfig.defaults.io.proxyUrl = "http://localhost/DotNet/proxy.ashx";
+    esriConfig.defaults.io.alwaysUseProxy = true;
+	map=new Map("mapDiv");
+	url="http://localhost:6080/arcgis/rest/services/MyMapService3/MapServer";
+	var dynamicsLayer=new ArcGISDynamicMapServiceLayer(url);
+	map.addLayer(dynamicsLayer)
+  
+  
+  });
+
+
+  </script>
+</head>
+<body>
+  <div id="mapDiv">  
+  </div>
+</body>
+</html>

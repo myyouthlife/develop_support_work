@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1,user-scalable=no"/>
+    <title>Simple Map</title>
+  <link rel="stylesheet" href="http://localhost/jsapi315/esri/css/esri.css">
+     <script src="http://localhost/jsapi315/init.js"></script>
+    <style>
+        html, body, #map {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+    </style>
+
+    <script>
+        var map;
+
+
+        require(["../js/baseMapModule.js", "esri/map"],
+                function (baseMapModule, Map) {
+                   // var extent = new Extent(1100263.228776408, 227964.1277186968, 1150110.828471607, 263778.1993468401, new SpatialReference({wkid: 3857}))
+                    map = new Map("map");
+                    var dynamicLayer=new jmbDynamicMapServiceLayer("http://192.168.220.64:6080/arcgis/rest/services/test/cadToServices/MapServer");
+                    map.addLayer(dynamicLayer);
+                });
+    </script>
+</head>
+
+<body>
+<div id="map"></div>
+</body>
+</html>
+ 

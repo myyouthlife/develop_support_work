@@ -1,0 +1,67 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1,user-scalable=no">
+    <title>My Application</title>
+    <link rel="stylesheet" href="http://localhost/jsapi315/esri/css/esri.css">
+    <style>
+        html, body, #map {
+            height: 100%;
+            margin: 0;
+            padding: 0:
+
+        }
+
+    </style>
+    <script src="http://localhost/jsapi315/init.js"></script>
+    <script>
+        var map;
+        require(["dojo/_base/declare",
+            "esri/map",
+            "dojo/on",
+            "esri/dijit/InfoWindowLite",
+            "esri/InfoTemplate",
+            "esri/layers/FeatureLayer",
+            "esri/layers/ArcGISDynamicMapServiceLayer",
+            "esri/layers/ArcGISTiledMapServiceLayer",
+            "esri/geometry/Extent",
+            "esri/SpatialReference",
+                "esri/dijit/LayerList",
+            "dojo/dom-construct",
+
+            "dojo/domReady!"
+        ], function (declare,
+                     Map,
+                     on,
+                     InfoWindowLite,
+                     InfoTemplate,
+                     FeatureLayer,
+                     ArcGISDynamicMapServiceLayer,
+                     ArcGISTiledMapServiceLayer,
+                     Extent,
+                     SpatialReference,
+                     LayerList,
+                     domConstruct) {
+            map = new Map("map");
+            var dynamicLayer = new ArcGISDynamicMapServiceLayer("http://192.168.220.64:6080/arcgis/rest/services/test/MyMapService/MapServer",{id:"www"});
+            map.addLayer(dynamicLayer);
+
+            var myWidget = new LayerList({
+                map: map,
+                layers: []
+            }, "layerList");
+
+            myWidget.startup();
+
+        })
+
+
+    </script>
+</head>
+<body>
+<div id="map" class="map">
+ <div id="layerList"></div>
+</div>
+</body>
+</html>

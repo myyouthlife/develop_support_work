@@ -1,8 +1,11 @@
-import subprocess
+from datetime import *
+import time
 
+t1=datetime.now()
 
-import os
-import sys
-mypath = os.path.abspath(__file__)
-mydir = os.path.dirname(my_path)
-subprocess.check_output(["echo", "Hello World!"])
+time.sleep(5)
+t2=datetime.now()
+
+t3=(t2-t1).seconds
+
+print str(t3);

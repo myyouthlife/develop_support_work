@@ -1,0 +1,118 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>Insert title here</title>
+<script type="text/javascript" src="http://localhost/jsapi315/init.js"></script>
+</head>
+<body>
+ <body>
+	<div id='map' style="width:100%;"></div>
+</body>
+</html>
+<script type="text/javascript">
+require(["dojo/ready",
+         "dojo/on","dojo/_base/connect",
+         "dojo/parser","dojo/dom","esri/symbols/TextSymbol","esri/InfoTemplate","esri/symbols/Font",
+ 		"extras/ClusterLayer","esri/tasks/query","esri/tasks/QueryTask","esri/symbols/PictureMarkerSymbol","esri/layers/GraphicsLayer",
+         "esri/renderers/ClassBreaksRenderer","esri/geometry/Point","esri/geometry/webMercatorUtils","esri/renderers/SimpleRenderer",
+         "esri/dijit/MultidimensionalSlider","esri/layers/ArcGISTiledMapServiceLayer",
+         "esri/map", "esri/dijit/PopupTemplate",
+         "esri/layers/ArcGISImageServiceLayer",
+         "dojo/dnd/Moveable",
+         "dojo/_base/url",
+         "esri/request",
+         "esri/dijit/TimeSlider",
+         "dojo/_base/array",
+         "dojo/Deferred",
+         "dijit/registry","esri/layers/ArcGISDynamicMapServiceLayer","esri/geometry/Extent","esri/SpatialReference",
+         "esri/graphic", 
+ 		"esri/symbols/SimpleMarkerSymbol","esri/layers/ArcGISImageServiceVectorLayer","esri/renderers/VectorFieldRenderer","esri/Color",
+ 		"esri/tasks/IdentifyTask","esri/tasks/IdentifyParameters","esri/tasks/IdentifyResult",
+         "dojox/charting/Chart","esri/toolbars/draw","esri/symbols/SimpleLineSymbol","esri/symbols/SimpleFillSymbol", 
+ 		"esri/geometry/geometryEngine",
+         "dojox/charting/axis2d/Default","esri/tasks/Geoprocessor",
+         "dojox/charting/plot2d/Markers",
+         "dojox/charting/themes/PurpleRain",
+         "dojox/charting/action2d/Tooltip",
+         "dijit/layout/BorderContainer",
+         "dijit/layout/ContentPane",
+         "dojox/layout/FloatingPane",
+         "dojo/domReady!"],
+               function (ready,on, connect,parser,dom, TextSymbol,InfoTemplate,Font,ClusterLayer,Query,QueryTask,PictureMarkerSymbol, GraphicsLayer,ClassBreaksRenderer,Point,webMercatorUtils,SimpleRenderer,
+ 						MdSlider, ArcGISTiledMapServiceLayer,Map, PopupTemplate,ImageServiceLayer, Moveable, Url,
+ 						esriRequest, TimeSlider, array, Deferred, 
+ 						registry,ArcGISDynamicMapServiceLayer,Extent,SpatialReference,
+ 						Graphic, SimpleMarkerSymbol,ArcGISImageServiceVectorLayer,VectorFieldRenderer,Color,
+ 						IdentifyTask,IdentifyParameters,IdentifyResult,
+ 						Chart,Draw,SimpleLineSymbol,SimpleFillSymbol,geometryEngine,
+ 						Default,Geoprocessor,
+ 						Markers, Wetland, Tooltip) {
+
+                 ready(function () {
+ 				parser.parse();
+                 map = new Map("map", {
+ 					isZoomSlider:true,
+ 					logo:false
+ 				  });
+ 				var dataStartTime = new Date(2016,2,28,1,0,0);
+ 				var dataEndTime = new Date(2016,3,6,0,0,0);
+ 				var monitorPointQueryUrl = "http://9.186.57.14:6080/arcgis/rest/services/monitorpoint/MapServer/0";
+ 				//添加全球底图
+ 				var baseMap =new ArcGISTiledMapServiceLayer("http://cache1.arcgisonline.cn/ArcGIS/rest/services/ChinaOnlineStreetColor/MapServer");
+ 				map.addLayer(baseMap);
+ 				//添加遮罩层
+ 				var maskLayer = new ArcGISDynamicMapServiceLayer("http://9.186.57.14:6080/arcgis/rest/services/mask/MapServer");
+ 				map.addLayer(maskLayer);
+ 				//设置遮罩层半透明
+ 				maskLayer.setOpacity(0.5);
+ 				var monitorGraphicLayer = new GraphicsLayer();
+ 				map.addLayer(monitorGraphicLayer);
+ 				//显示点层时的范围
+ 				var pointExtent = new Extent(12808822.569982119,4783189.196906125,13139816.981970942,5013112.573419549,new SpatialReference(3857));
+ 				var intiExtent = new Extent(12458273.748358464,4547023.6658124,13341983.849111998,5121832.10709595,new SpatialReference(3857));
+ 				map.setExtent(pointExtent);
+                map.resize();			
+                var defaultSym = new SimpleMarkerSymbol().setSize(4);
+                function queryMonitorValueComplete(results)
+	 			{
+                	monitorGraphicLayer.clear();
+                	
+                		var id = results[j].id;
+    					var longitude = 116.645262;
+    					var latitude = 39.65286;
+    					 var name = "a";
+    					 var pointTypeName ="b";
+    					 var area = "c";
+    					 var adress = "d";
+    					 var siteName = "e";
+    					 var opointState ="f";
+	 				//显示查询的结果列表
+					 var objattribute = {'name':name,'pointTypeName':pointTypeName,'area':area,'adress':adress,'siteName':siteName,'siteName':siteName};
+					 var graphicarr=[];
+					 var img1_1src=contextPath+"/resource/images/point/icon00_1.png";//点的图片
+    				 var symbol = new PictureMarkerSymbol(img1_1Nullsrc, 36, 69).setOffset(0, 15);
+					 var wgs = new SpatialReference({"wkid": 3857});
+					　var lngAndLat = webMercatorUtils.lngLatToXY(longitude,latitude);
+						var xcoordination = lngAndLat[0];
+						var ycoordination = lngAndLat[1];
+						var pointGeometry = new  Point(parseFloat(xcoordination), parseFloat(ycoordination), wgs);
+						var infoTemplate = new InfoTemplate("xxx信息","xxx名称: ${name} <br/>xxx类型: ${pointTypeName} <br/>所在区域: ${area} <br/>具体地址: ${adress} <br/>xxx点: ${siteName}");
+						var graphic = new Graphic(pointGeometry,symbol,objattribute,infoTemplate);
+						monitorGraphicLayer.add(graphic);
+						//（我们想在这个此处绑定一个点击事件， 点击后，弹出模板的同时，能够响应该点击事件, 但是现在程序中无法进入到test函数中。）
+						dojo.connect(monitorGraphicLayer,"onClick", function test){
+							
+						}
+						function test()
+						{
+						  alert("abdffdfd");
+						}
+                	
+	 		}	
+                
+	});
+});
+
+
+</script>

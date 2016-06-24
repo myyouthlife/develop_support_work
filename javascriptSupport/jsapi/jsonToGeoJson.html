@@ -1,0 +1,65 @@
+<!DOCTYPE html> 
+<html>  
+<head> 
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=7,IE=9">
+<meta name="viewport" content="initial-scale=1, maximum-scale=1,user-scalable=no">
+<title>ArcGIS GeoJSON Layer</title>  
+<!-- ArcGIS API for JavaScript CSS-->
+<link rel="stylesheet" href="//js.arcgis.com/3.9/js/esri/css/esri.css">
+<!-- Web Framework CSS - Bootstrap (getbootstrap.com) and Bootstrap-map-js (github.com/esri/bootstrap-map-js) -->
+<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" rel="stylesheet">
+<link rel="stylesheet" href="//esri.github.io/bootstrap-map-js/src/css/bootstrapmap.css">
+<style>
+html, body, #mapDiv {
+  height: 100%;
+  width: 100%;
+}
+</style>
+
+<!-- ArcGIS API for JavaScript library references -->
+<script src="//js.arcgis.com/3.10"></script>
+
+<!-- Terraformer reference -->
+<script src="./vendor/terraformer/terraformer.min.js"></script>
+<script src="./vendor/terraformer-arcgis-parser/terraformer-arcgis-parser.min.js"></script>
+
+<script>
+    require(["esri/map",
+        "./src/geojsonlayer",
+        "dojo/on",
+        "dojo/dom",
+        "dojo/domReady!"],
+      function (Map, GeoJsonLayer, on, dom) {
+
+        // Create map
+        var map = new Map("mapDiv", {
+            basemap: "gray",
+            center: [-122.5, 45.5],
+            zoom: 5
+        });
+
+        map.on("load", function () {
+            addGeoJsonLayer("./data/dc-schools.json");
+        });
+
+        // Add the layer
+        function addGeoJsonLayer(url) {
+            // Create the layer
+            var geoJsonLayer = new GeoJsonLayer({
+                url: url
+            });
+            // Zoom to layer
+            geoJsonLayer.on("update-end", function (e) {
+                map.setExtent(e.target.extent.expand(1.2));
+            });
+            // Add to map
+            map.addLayer(geoJsonLayer);
+        }
+    });
+</script>
+</head>
+<body>
+    <div id="mapDiv"></div>
+</body>
+</html>

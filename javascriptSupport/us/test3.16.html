@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title>Simple Map</title>
+    <link rel="stylesheet" type="text/css" href="http://localhost/jsapi315/dijit/themes/tundra/tundra.css"/>
+    <link rel="stylesheet" type="text/css" href="http://localhost/jsapi315/esri/css/esri.css" />
+    <script type="text/javascript" src="http://localhost/jsapi315/init.js"></script>
+    <script type="text/javascript">
+        dojo.require("esri.map");
+        function init() {
+            var myMap = new esri.Map("mapDiv");
+            //note that if you do not have public Internet access then you will need to point this url to your own locally accessible cached service.
+            var myTiledMapServiceLayer = new esri.layers.ArcGISTiledMapServiceLayer("http://192.168.220.64:6080/arcgis/rest/services/cacheTest/MyMapService_cache/MapServer");
+            myMap.addLayer(myTiledMapServiceLayer);
+        }
+        dojo.addOnLoad(init);
+    </script>
+</head>
+<body class="tundra">
+<div id="mapDiv" style="height:600px; border:1px solid #000;"></div>
+</body>
+</html>

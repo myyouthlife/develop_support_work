@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1,user-scalable=no">
+
+
+    <title>Info Window Lite</title>
+
+    <link rel="stylesheet" href="http://localhost/jsapi315/esri/css/esri.css">
+    <style>
+        html, body, #mapDiv {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+    </style>
+
+    <script src="http://localhost/jsapi315/init.js"></script>
+    <script>
+
+        require([
+            "esri/map",
+            "dojo/on",
+            "esri/dijit/InfoWindowLite",
+            "esri/InfoTemplate",
+            "esri/layers/FeatureLayer",
+            "esri/layers/ArcGISDynamicMapServiceLayer",
+            "esri/geometry/Extent",
+            "esri/SpatialReference",
+            "dojo/dom-construct",
+
+            "dojo/domReady!"
+        ], function (Map,
+                     on,
+                     InfoWindowLite,
+                     InfoTemplate,
+                     FeatureLayer,
+                     ArcGISDynamicMapServiceLayer,
+                     Extent,
+                     SpatialReference,
+                     domConstruct) {
+
+            var extent = new Extent(8176078.237599999, 704818.0274999999, 1.50376858856E7, 7086873.4196000025, new SpatialReference({wkid: 3857}))
+            var map = new Map("mapDiv", {
+                extent: extent
+            });
+            var tiledLyer = new ArcGISDynamicMapServiceLayer("http://192.168.220.64:6080/arcgis/rest/services/test/chinaPopulation/MapServer");
+            map.addLayer(tiledLyer);
+
+            var infoWindow = new InfoWindowLite(null, domConstruct.create("div", null, null, map.root));
+            infoWindow.startup();
+            map.setInfoWindow(infoWindow);
+
+            var template = new InfoTemplate();
+            template.setTitle("<b>${STATE_NAME} - ${STATE_ABBR}</b>");
+            template.setContent("${STATE_NAME} is in the ${SUB_REGION} sub region.");
+
+            // esri.config.defaults.io.proxyUrl="http://localhost/DotNet/proxy.ashx" ;
+            //esri.config.defaults.io.alwaysUseProxy=true;
+
+            template.setContent("${STATE_NAME} is in the ${SUB_REGION} sub region.");
+
+            //add a layer to the map
+            var featureLayer = new FeatureLayer("http://192.168.220.64:6080/arcgis/rest/services/test/chinaPopulation/MapServer/0", {
+                mode: FeatureLayer.MODE_ONDEMAND,
+                infoTemplate: template,
+                outFields: ["*"]
+            });
+
+
+            map.addLayer(featureLayer);
+/*
+            featureLayer.onLoad=function(e){
+
+              console.log(e.fullExtent)
+
+            }*/
+/*
+            map.graphics.on("click",function(){
+
+                console.log("beeecliked")
+            })*/
+            map.infoWindow.resize(200, 75);
+
+        });
+    </script>
+</head>
+
+<body>
+<div id="mapDiv"></div>
+</body>
+
+</html>
+ 
